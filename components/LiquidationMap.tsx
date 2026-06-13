@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Treemap, ResponsiveContainer } from "recharts";
+import { useLiquidationFeed } from "@/hooks/useLiquidationFeed";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -27,17 +28,8 @@ interface ExchangeRow {
   shortRate: number;
 }
 
-interface RealtimeLiq {
-  id: string;
-  symbol: string;
-  price: number;
-  value: number;
-  time: string;
-  side: "LONG" | "SHORT";
-}
 
-// ── Mock Data ─────────────────────────────────────────────────────────────────
-// Replace fetch() calls below with real Coinglass API endpoints when ready.
+// ── Reference Data (treemap — approximate 24h baseline) ──────────────────────
 
 const COINS: Record<string, Coin[]> = {
   "1h": [
@@ -133,27 +125,17 @@ const EXCHANGES: ExchangeRow[] = [
   { name: "BitGet",  liquidations:    660_000, long:    90_000, short:    570_000, longRate: 0.1364, shortRate: 0.8636 },
 ];
 
-const SEED_FEED: RealtimeLiq[] = [
-  { id: "0", symbol: "NEAR-USDT-SWAP", price:  2.153, value: 19_250, time: "23:25:26", side: "SHORT" },
-  { id: "1", symbol: "AVAXUSDT",        price:  6.7352,value:  8_160, time: "23:25:24", side: "SHORT" },
-  { id: "2", symbol: "NEARUSDT",        price:  2.13, value:  3_740, time: "23:25:22", side: "LONG"  },
-  { id: "3", symbol: "BTCUSDT",         price: 105_240,value: 71_000, time: "23:25:18", side: "LONG"  },
-  { id: "4", symbol: "ETHUSDT",         price:  3_820, value: 28_400, time: "23:25:14", side: "SHORT" },
-  { id: "5", symbol: "SOLUSDT",         price: 168.5,  value: 12_600, time: "23:25:10", side: "SHORT" },
-  { id: "6", symbol: "XRPUSDT",         price:  2.41,  value:  6_800, time: "23:25:06", side: "LONG"  },
-  { id: "7", symbol: "DOGEUSDT",        price:  0.198, value:  4_300, time: "23:24:58", side: "SHORT" },
-];
+const EXCHANGE_COLORS: Record<string, string> = {
+  Binance: "text-amber-400 bg-amber-500/10",
+  Bybit:   "text-orange-400 bg-orange-500/10",
+  OKX:     "text-sky-400 bg-sky-500/10",
+};
 
-const LIVE_POOL = [
-  { symbol: "BTCUSDT",  price: 105_240 },
-  { symbol: "ETHUSDT",  price:   3_820 },
-  { symbol: "SOLUSDT",  price:   168.5 },
-  { symbol: "XRPUSDT",  price:    2.41 },
-  { symbol: "NEARUSDT", price:    2.15 },
-  { symbol: "AVAXUSDT", price:   6.74  },
-  { symbol: "DOGEUSDT", price:   0.198 },
-  { symbol: "BNBUSDT",  price:  690.5  },
-];
+const STATUS_DOT: Record<string, string> = {
+  live:       "bg-emerald-400",
+  connecting: "bg-amber-400 animate-pulse",
+  error:      "bg-rose-500",
+};
 
 // ── Utils ─────────────────────────────────────────────────────────────────────
 
@@ -291,24 +273,7 @@ type TF = (typeof TFS)[number];
 export default function LiquidationMap() {
   const [tf, setTf] = useState<TF>("4h");
   const [view, setView] = useState<"symbol" | "exchange">("symbol");
-  const [feed, setFeed] = useState<RealtimeLiq[]>(SEED_FEED);
-
-  // Simulate real-time liquidations
-  useEffect(() => {
-    const id = setInterval(() => {
-      const pick = LIVE_POOL[Math.floor(Math.random() * LIVE_POOL.length)];
-      const newItem: RealtimeLiq = {
-        id: Date.now().toString(),
-        symbol: pick.symbol,
-        price: pick.price * (1 + (Math.random() - 0.5) * 0.002),
-        value: Math.random() * 90_000 + 4_000,
-        time: new Date().toTimeString().slice(0, 8),
-        side: Math.random() > 0.48 ? "SHORT" : "LONG",
-      };
-      setFeed((prev) => [newItem, ...prev.slice(0, 9)]);
-    }, 2800);
-    return () => clearInterval(id);
-  }, []);
+  const { events: feed, stats: feedStats } = useLiquidationFeed(60);
 
   const coins = COINS[tf];
   const stats = STATS;
@@ -448,11 +413,23 @@ export default function LiquidationMap() {
             <span className="text-[11px] font-mono font-semibold text-zinc-300 uppercase tracking-widest">
               Real-Time Liquidations
             </span>
-            <div className="flex items-center gap-1.5 text-[10px] font-mono text-emerald-400">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-              LIVE
+            <div className="flex items-center gap-3">
+              {(["Binance", "Bybit", "OKX"] as const).map((ex) => (
+                <div key={ex} className="flex items-center gap-1 text-[9px] font-mono text-zinc-500">
+                  <span className={`w-1.5 h-1.5 rounded-full ${STATUS_DOT[feedStats[ex.toLowerCase() as "binance" | "bybit" | "okx"]]}`} />
+                  {ex}
+                </div>
+              ))}
+              <span className="text-[9px] font-mono text-zinc-600 tabular-nums">
+                {feedStats.totalEvents} events
+              </span>
             </div>
           </div>
+          {feed.length === 0 ? (
+            <div className="px-4 py-8 text-center text-zinc-600 text-xs font-mono">
+              Connecting to exchanges...
+            </div>
+          ) : (
           <table className="w-full text-xs font-mono">
             <thead>
               <tr className="border-b border-zinc-800">
@@ -465,7 +442,7 @@ export default function LiquidationMap() {
             </thead>
             <tbody>
               <AnimatePresence initial={false}>
-                {feed.slice(0, 9).map((item) => (
+                {feed.slice(0, 12).map((item) => (
                   <motion.tr
                     key={item.id}
                     initial={{ opacity: 0, backgroundColor: item.side === "LONG" ? "rgba(244,63,94,0.18)" : "rgba(52,211,153,0.15)" }}
@@ -476,18 +453,17 @@ export default function LiquidationMap() {
                   >
                     <td className="px-3 py-2.5">
                       <span className={`font-semibold ${item.side === "LONG" ? "text-rose-400" : "text-emerald-400"}`}>
-                        {item.symbol}
+                        {item.symbol.replace("USDT", "")}
                       </span>
-                      <span className={`ml-1.5 text-[9px] px-1 py-0.5 rounded ${
-                        item.side === "LONG"
-                          ? "bg-rose-500/20 text-rose-400"
-                          : "bg-emerald-500/20 text-emerald-400"
-                      }`}>
-                        {item.side}
+                      <span className={`ml-1 text-[9px] px-1 py-0.5 rounded ${
+                        item.side === "LONG" ? "bg-rose-500/20 text-rose-400" : "bg-emerald-500/20 text-emerald-400"
+                      }`}>{item.side}</span>
+                      <span className={`ml-1 text-[9px] px-1 py-0.5 rounded ${EXCHANGE_COLORS[item.exchange]}`}>
+                        {item.exchange.slice(0, 3).toUpperCase()}
                       </span>
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-zinc-400">
-                      ${item.price >= 1000 ? item.price.toLocaleString("en-US", { maximumFractionDigits: 0 }) : item.price.toFixed(3)}
+                      ${item.price >= 1000 ? item.price.toLocaleString("en-US", { maximumFractionDigits: 0 }) : item.price.toFixed(4)}
                     </td>
                     <td className="px-3 py-2.5 text-right tabular-nums text-zinc-200 font-semibold">
                       {fmt$(item.value)}
@@ -500,6 +476,7 @@ export default function LiquidationMap() {
               </AnimatePresence>
             </tbody>
           </table>
+          )}
         </div>
       </div>
     </div>
