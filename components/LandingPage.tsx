@@ -86,7 +86,7 @@ const STATS = [
 
 const fadeUp = {
   hidden: { opacity: 0, y: 20 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] } },
+  show:   { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" as const } },
 };
 
 const stagger = {
@@ -249,7 +249,7 @@ export default function LandingPage() {
           <motion.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            transition={{ delay: 0.3, duration: 0.6, ease: "easeOut" as const }}
             className="hidden lg:flex justify-center"
           >
             <TerminalMockup />
