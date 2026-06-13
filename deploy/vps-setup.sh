@@ -23,16 +23,14 @@ mkdir -p /opt/smcph-dashboard
 chown -R root:root /opt/smcph-dashboard
 
 echo "=== Cloning dashboard repo ==="
-# First push the dashboard folder to GitHub, then clone here
-# git clone https://github.com/smartmoneycryptoph/smcph-dashboard.git /opt/smcph-dashboard
-# OR copy via rsync from GitHub Actions (see deploy workflow)
+git clone https://github.com/smartmoneycryptoph/smcph-dashboard.git /opt/smcph-dashboard
 
 echo "=== Copying nginx configs ==="
-cp nginx-smartmoneycryptoph.tech.conf /etc/nginx/sites-available/smartmoneycryptoph.tech
-cp nginx-smcphbot.tech.conf           /etc/nginx/sites-available/smcphbot.tech
+cp deploy/nginx-smartmoneycryptoph.tech.conf /etc/nginx/sites-available/smartmoneycryptoph.tech
+cp deploy/nginx-dashboard.smartmoneycryptoph.tech.conf /etc/nginx/sites-available/dashboard.smartmoneycryptoph.tech
 
 ln -sf /etc/nginx/sites-available/smartmoneycryptoph.tech /etc/nginx/sites-enabled/
-ln -sf /etc/nginx/sites-available/smcphbot.tech           /etc/nginx/sites-enabled/
+ln -sf /etc/nginx/sites-available/dashboard.smartmoneycryptoph.tech /etc/nginx/sites-enabled/
 
 # Remove default nginx site
 rm -f /etc/nginx/sites-enabled/default
@@ -46,11 +44,11 @@ systemctl restart nginx
 
 echo ""
 echo "=== Getting SSL certificates ==="
-echo "Make sure DNS A records are set FIRST:"
-echo "  smartmoneycryptoph.tech  A  187.127.99.76"
-echo "  smcphbot.tech            A  187.127.99.76"
+echo "DNS records required:"
+echo "  smartmoneycryptoph.tech           A  187.127.99.76"
+echo "  dashboard.smartmoneycryptoph.tech A  187.127.99.76"
 echo ""
-read -p "DNS records set? Press Enter to continue..."
+read -p "DNS records set and propagated? Press Enter to continue..."
 
 certbot --nginx \
   -d smartmoneycryptoph.tech \
@@ -58,8 +56,7 @@ certbot --nginx \
   --non-interactive --agree-tos -m panganting.amerhussien@gmail.com
 
 certbot --nginx \
-  -d smcphbot.tech \
-  -d www.smcphbot.tech \
+  -d dashboard.smartmoneycryptoph.tech \
   --non-interactive --agree-tos -m panganting.amerhussien@gmail.com
 
 echo "=== SSL auto-renewal ==="
@@ -78,6 +75,7 @@ pm2 startup systemd -u root --hp /root
 echo ""
 echo "=== DONE ==="
 echo "Landing page: https://smartmoneycryptoph.tech"
-echo "Dashboard:    https://smcphbot.tech/dashboard"
+echo "Dashboard:    https://dashboard.smartmoneycryptoph.tech/dashboard"
 echo ""
 echo "Test: curl -I https://smartmoneycryptoph.tech"
+echo "Test: curl -I https://dashboard.smartmoneycryptoph.tech"
