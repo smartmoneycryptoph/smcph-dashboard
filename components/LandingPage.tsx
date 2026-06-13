@@ -17,7 +17,7 @@ import {
 } from "@phosphor-icons/react";
 
 const TELEGRAM_LINK = "https://t.me/smartmoneycryptotraders";
-const DASHBOARD_LINK = "/dashboard";
+const DASHBOARD_LINK = "/follow";
 
 // ── Feature data ─────────────────────────────────────────────────────────────
 
