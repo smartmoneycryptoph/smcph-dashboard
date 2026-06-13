@@ -406,6 +406,83 @@ export default function LandingPage() {
         </motion.div>
       </section>
 
+      {/* ── G.O.L.D. Framework ── */}
+      <section className="py-20 px-6 border-t border-zinc-800/60">
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4 }}
+          className="max-w-6xl mx-auto"
+        >
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <span className="text-[11px] font-mono text-amber-400 uppercase tracking-widest">Free Education</span>
+              <h2 className="mt-4 font-mono text-3xl md:text-4xl font-black tracking-tight text-zinc-50">
+                Master the{" "}
+                <span className="text-amber-400">G.O.L.D.</span>{" "}
+                Framework
+              </h2>
+              <p className="mt-4 text-sm text-zinc-400 font-mono leading-relaxed max-w-[52ch]">
+                The institutional trading system built for Filipino crypto futures traders.
+                Learn to read the market like a whale - Grand Flow, Origin Zone, Liquidity Hunt, Discipline Entry.
+              </p>
+              <div className="mt-6 grid grid-cols-2 gap-3">
+                {[
+                  { label: "Grand Flow", desc: "HTF bias identification" },
+                  { label: "Origin Zone", desc: "Institutional entry mapping" },
+                  { label: "Liquidity Hunt", desc: "Session-based timing" },
+                  { label: "Discipline Entry", desc: "Execution confirmation" },
+                ].map((item) => (
+                  <div key={item.label} className="border border-zinc-800 rounded-sm p-3 bg-zinc-900/40">
+                    <div className="text-xs font-mono font-bold text-amber-400">{item.label}</div>
+                    <div className="text-[11px] font-mono text-zinc-500 mt-0.5">{item.desc}</div>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <a
+                  href="https://course.smartmoneycryptoph.tech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 text-sm font-mono font-bold rounded transition-colors"
+                >
+                  Begin Your Training
+                  <ArrowRight size={14} weight="bold" />
+                </a>
+                <a
+                  href="https://course.smartmoneycryptoph.tech"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 px-6 py-3 border border-zinc-700 hover:border-amber-500/50 text-zinc-400 hover:text-amber-400 text-sm font-mono rounded transition-colors"
+                >
+                  Learn the Framework
+                </a>
+              </div>
+            </div>
+            <div className="border border-amber-500/20 rounded-sm p-6 bg-amber-500/3 space-y-4">
+              <div className="font-mono text-[10px] text-amber-400/60 uppercase tracking-widest mb-4">SMC Toolkit Included</div>
+              {[
+                "Break of Structure (BOS)",
+                "Fair Value Gaps (FVG)",
+                "Order Blocks (OB)",
+                "Inducement + Liquidity Sweep",
+                "NY Open Kill Zone (8-11 PM PHT)",
+                "Minimum 1:3 Risk-Reward",
+              ].map((item) => (
+                <div key={item} className="flex items-center gap-3 text-xs font-mono text-zinc-400">
+                  <span className="w-1.5 h-1.5 rounded-full bg-amber-400 shrink-0" />
+                  {item}
+                </div>
+              ))}
+              <div className="pt-4 border-t border-zinc-800 text-[11px] font-mono text-zinc-600">
+                Focused on Philippine Standard Time trading windows
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
       {/* ── CTA ── */}
       <section className="py-24 px-6">
         <motion.div
