@@ -35,8 +35,8 @@ const FEATURES = [
     title: "Liquidation Heatmap",
     desc: "Plasma-colored heatmap showing where liquidation clusters rest. Yellow = massive magnet. Purple = sparse. BSL/SSL auto-labeled.",
     tag: "Price Magnet",
-    color: "text-violet-400",
-    bg: "bg-violet-400/10",
+    color: "text-amber-400",
+    bg: "bg-amber-400/10",
   },
   {
     icon: Eye,
@@ -106,20 +106,20 @@ const stagger = {
 
 function TerminalMockup() {
   const lines = [
-    { t: 200,  text: "$ /asia BTC",                   color: "text-violet-400" },
+    { t: 200,  text: "$ /asia BTC",                   color: "text-amber-400" },
     { t: 600,  text: "BTCUSDT  14:32 PHT | London",   color: "text-zinc-300" },
     { t: 800,  text: "PWH    $107,200  +1.22%  [ERL]", color: "text-amber-400" },
     { t: 900,  text: "Asia H $105,940  +0.08%  [ERL] SWEPT 07:30", color: "text-rose-400" },
     { t: 1000, text: "=== NOW  $105,855  [BULL]",      color: "text-emerald-400" },
     { t: 1100, text: "EQ     $105,210  -0.61%  [IRL]", color: "text-zinc-400" },
     { t: 1200, text: "Asia L $104,480  -1.30%  [ERL]", color: "text-sky-400" },
-    { t: 1400, text: "$ /liqmap BTC 1h",               color: "text-violet-400" },
+    { t: 1400, text: "$ /liqmap BTC 1h",               color: "text-amber-400" },
     { t: 1800, text: "Generating heatmap...",           color: "text-zinc-500" },
     { t: 2200, text: "Chart sent. BSL: $107,200 | SSL: $104,480", color: "text-emerald-400" },
   ];
 
   return (
-    <div className="relative w-full max-w-xl font-mono text-xs rounded border border-zinc-800 bg-zinc-900/80 overflow-hidden shadow-2xl shadow-violet-500/10">
+    <div className="relative w-full max-w-xl font-mono text-xs rounded border border-zinc-800 bg-zinc-900/80 overflow-hidden shadow-2xl shadow-amber-500/10">
       {/* Window chrome */}
       <div className="flex items-center gap-1.5 px-3 py-2 border-b border-zinc-800 bg-zinc-950">
         <span className="w-2.5 h-2.5 rounded-full bg-rose-500/80" />
@@ -143,7 +143,7 @@ function TerminalMockup() {
         <motion.span
           animate={{ opacity: [1, 0, 1] }}
           transition={{ repeat: Infinity, duration: 1 }}
-          className="inline-block w-1.5 h-3.5 bg-violet-400 align-middle"
+          className="inline-block w-1.5 h-3.5 bg-amber-400 align-middle"
         />
       </div>
     </div>
@@ -160,7 +160,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 inset-x-0 z-50 border-b border-zinc-800/60 bg-zinc-950/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-violet-500" />
+            <span className="w-2 h-2 rounded-full bg-amber-500" />
             <span className="font-mono text-sm font-bold text-zinc-100 tracking-wider">SMCPH</span>
           </div>
           <div className="hidden md:flex items-center gap-6 text-xs font-mono text-zinc-500">
@@ -172,7 +172,7 @@ export default function LandingPage() {
             href={TELEGRAM_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 bg-violet-600 hover:bg-violet-500 text-white text-xs font-mono font-semibold rounded transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-amber-500 hover:bg-amber-400 text-zinc-950 text-xs font-mono font-semibold rounded transition-colors"
           >
             <TelegramLogo weight="fill" size={14} />
             Join Channel
@@ -190,7 +190,7 @@ export default function LandingPage() {
             className="space-y-6"
           >
             <motion.div variants={fadeUp}>
-              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-400 text-[11px] font-mono uppercase tracking-widest">
+              <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-amber-500/30 bg-amber-500/10 text-amber-400 text-[11px] font-mono uppercase tracking-widest">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                 Live Now - Telegram Bot
               </span>
@@ -202,7 +202,7 @@ export default function LandingPage() {
             >
               Institutional-Grade
               <br />
-              <span className="text-violet-400">Trading Intelligence</span>
+              <span className="text-amber-400">Trading Intelligence</span>
               <br />
               in Telegram
             </motion.h1>
@@ -221,7 +221,7 @@ export default function LandingPage() {
                 href={TELEGRAM_LINK}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-2 px-6 py-3 bg-violet-600 hover:bg-violet-500 text-white text-sm font-mono font-semibold rounded transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 text-sm font-mono font-semibold rounded transition-colors"
               >
                 <TelegramLogo weight="fill" size={16} />
                 Join Free Channel
@@ -239,7 +239,7 @@ export default function LandingPage() {
             <motion.div variants={fadeUp} className="flex gap-6 pt-2">
               {STATS.map(({ value, label }) => (
                 <div key={label}>
-                  <div className="font-mono text-xl font-bold text-violet-400 tabular-nums">{value}</div>
+                  <div className="font-mono text-xl font-bold text-amber-400 tabular-nums">{value}</div>
                   <div className="text-[11px] text-zinc-500 font-mono">{label}</div>
                 </div>
               ))}
@@ -270,7 +270,7 @@ export default function LandingPage() {
           transition={{ duration: 0.4 }}
           className="mb-14"
         >
-          <span className="text-[11px] font-mono text-violet-400 uppercase tracking-widest">What You Get</span>
+          <span className="text-[11px] font-mono text-amber-400 uppercase tracking-widest">What You Get</span>
           <h2 className="mt-2 font-mono text-2xl md:text-3xl font-bold tracking-tight">
             Every Edge. One Bot.
           </h2>
@@ -318,7 +318,7 @@ export default function LandingPage() {
           transition={{ duration: 0.4 }}
           className="mb-14"
         >
-          <span className="text-[11px] font-mono text-violet-400 uppercase tracking-widest">Commands</span>
+          <span className="text-[11px] font-mono text-amber-400 uppercase tracking-widest">Commands</span>
           <h2 className="mt-2 font-mono text-2xl md:text-3xl font-bold tracking-tight">
             Type. Get Alpha.
           </h2>
@@ -341,9 +341,9 @@ export default function LandingPage() {
               variants={fadeUp}
               className="flex items-start gap-4 p-4 border border-zinc-800/60 rounded-sm bg-zinc-900/20 hover:bg-zinc-900/60 hover:border-zinc-700 transition-colors"
             >
-              <Terminal size={14} className="text-violet-400 mt-0.5 shrink-0" />
+              <Terminal size={14} className="text-amber-400 mt-0.5 shrink-0" />
               <div>
-                <code className="text-sm font-mono font-bold text-violet-300">{cmd}</code>
+                <code className="text-sm font-mono font-bold text-amber-300">{cmd}</code>
                 <p className="text-[11px] text-zinc-500 font-mono mt-0.5">{desc}</p>
               </div>
             </motion.div>
@@ -363,7 +363,7 @@ export default function LandingPage() {
           transition={{ duration: 0.4 }}
           className="mb-14"
         >
-          <span className="text-[11px] font-mono text-violet-400 uppercase tracking-widest">How It Works</span>
+          <span className="text-[11px] font-mono text-amber-400 uppercase tracking-widest">How It Works</span>
           <h2 className="mt-2 font-mono text-2xl md:text-3xl font-bold tracking-tight">
             Three Steps
           </h2>
@@ -398,7 +398,7 @@ export default function LandingPage() {
           ].map(({ step, icon: Icon, title, desc }) => (
             <motion.div key={step} variants={fadeUp} className="relative">
               <div className="font-mono text-6xl font-black text-zinc-800 select-none mb-4">{step}</div>
-              <Icon size={22} className="text-violet-400 mb-3" weight="duotone" />
+              <Icon size={22} className="text-amber-400 mb-3" weight="duotone" />
               <h3 className="font-mono text-sm font-bold text-zinc-100 mb-2">{title}</h3>
               <p className="text-xs text-zinc-500 font-mono leading-relaxed">{desc}</p>
             </motion.div>
@@ -492,7 +492,7 @@ export default function LandingPage() {
           transition={{ duration: 0.4 }}
           className="max-w-2xl mx-auto text-center border border-zinc-800 rounded-sm p-12 bg-zinc-900/30"
         >
-          <span className="text-[11px] font-mono text-violet-400 uppercase tracking-widest">Free Access</span>
+          <span className="text-[11px] font-mono text-amber-400 uppercase tracking-widest">Free Access - Join Now</span>
           <h2 className="mt-4 font-mono text-2xl md:text-3xl font-bold tracking-tight">
             Start Trading Smarter
           </h2>
@@ -505,7 +505,7 @@ export default function LandingPage() {
               href={TELEGRAM_LINK}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-8 py-3 bg-violet-600 hover:bg-violet-500 text-white text-sm font-mono font-semibold rounded transition-colors"
+              className="flex items-center gap-2 px-8 py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 text-sm font-mono font-semibold rounded transition-colors"
             >
               <TelegramLogo weight="fill" size={16} />
               Join Telegram Channel
@@ -525,7 +525,7 @@ export default function LandingPage() {
       <footer className="border-t border-zinc-800/60 py-8 px-6">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-violet-500" />
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-500" />
             <span className="font-mono text-xs font-bold text-zinc-400">SMCPH</span>
             <span className="text-zinc-700 text-xs font-mono">SmartMoneyCryptoPH</span>
           </div>
@@ -536,7 +536,7 @@ export default function LandingPage() {
             href={TELEGRAM_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-violet-400 transition-colors"
+            className="flex items-center gap-1.5 text-xs font-mono text-zinc-500 hover:text-amber-400 transition-colors"
           >
             <TelegramLogo size={13} />
             Telegram
