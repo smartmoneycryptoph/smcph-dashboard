@@ -6,7 +6,7 @@ import { Treemap, ResponsiveContainer } from "recharts";
 import { useLiquidationFeed } from "@/hooks/useLiquidationFeed";
 import {
   MagnifyingGlass, X, ArrowUp, ArrowDown, ArrowsDownUp,
-  BroadcastSimple, Warning, Spinner,
+  Broadcast, CircleNotch,
 } from "@phosphor-icons/react";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
